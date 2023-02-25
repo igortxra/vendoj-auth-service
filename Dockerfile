@@ -12,4 +12,4 @@ RUN python -m pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev --no-interaction --no-ansi --no-root
 
-CMD exec gunicorn -b 0.0.0.0:5000 --workers 1 --threads 8 --timeout 0 app:app
+CMD exec gunicorn -b 0.0.0.0:5000 --workers 1 --threads 8 --timeout 0 "app:create_app()"
