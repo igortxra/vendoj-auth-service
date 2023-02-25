@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "vendoj-auth-service"
+version = "0.1.0"
+description = "Authentication and authorization service for Vendoj"
+authors = ["igortxra <igor.teixeira@cromai.com>"]
+readme = "README.md"
+packages = [{include = "vendoj_auth_service"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.3"
+gunicorn = "^20.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
