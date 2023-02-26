@@ -1,12 +1,21 @@
 from flask import Flask
+from . import config
+from .controllers import auth
+from . import database
 
 
 def create_app() -> Flask:
+
     app = Flask(__name__)
 
-    @app.route('/')
-    def index():
-        return "Hello world"
+    # Load configurations
+    config.init_app(app)
+
+    # Blueprints
+    auth.init_app(app)
+
+    # Database
+    database.init_app(app)
 
     return app
 

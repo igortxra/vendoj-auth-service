@@ -5,5 +5,5 @@ from app.models import User
 class IUserRepository:
 
     @abstractmethod
-    def get_user_by_email(self, email: str) -> User:
+    def get_user_by_email(self, email: str) -> User | None:
         raise NotImplementedError
