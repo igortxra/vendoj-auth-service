@@ -1,6 +1,5 @@
 from typing import Tuple
-
-from app.interfaces import ICryptService, IUserRepository, IJWTService
+from app.interfaces import ICryptService, IUserRepository, IAuthService
 from app.models.errors import InvalidUserOrPasswordException
 
 
@@ -10,32 +9,18 @@ class UCLogin:
         self,
         user_repository: IUserRepository,
         crypt_service: ICryptService,
-        jwt_service: IJWTService
+        auth_service: IAuthService
     ) -> None:
         self.user_repository = user_repository
         self.crypt_service = crypt_service
-        self.jwt_service = jwt_service
+        self.auth_service = auth_service
 
     def run(self, email: str, password: str) -> Tuple[str, str]:
         user = self.user_repository.get_user_by_email(email)
-        if (
-            user is None
-            or self.crypt_service.check_password(password, user.password) is False
-        ):
+        if user is None or not self.crypt_service.check_password(password, user.password):
             raise InvalidUserOrPasswordException
 
-        claims_access_token = {
-            "sub": user.id,
-            # "exp": value
-        }
+        access_token = self.auth_service.generate_access_token(user)
+        refresh_token = self.auth_service.generate_refresh_token(user)
 
-        claims_refresh_token = {
-            "sub": user.id,
-            # "exp": value,
-            "refresh": True
-        }
-
-        access_token = self.jwt_service.generate_token(claims_access_token)
-        refresh_token = self.jwt_service.generate_token(claims_refresh_token)
-
-        return (access_token, refresh_token)
+        return access_token, refresh_token

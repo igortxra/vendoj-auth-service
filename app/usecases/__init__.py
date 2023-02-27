@@ -1,5 +1,5 @@
 from app.repositories import UserRepository
-from app.services import JWTService, CryptService
+from app.services import CryptService, AuthService
 
 from .login import UCLogin
 
@@ -11,5 +11,5 @@ class Usecases:
         return UCLogin(
             user_repository=UserRepository(),
             crypt_service=CryptService(),
-            jwt_service=JWTService()
+            auth_service=AuthService()
         )
